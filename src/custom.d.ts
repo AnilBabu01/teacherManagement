@@ -6,5 +6,13 @@ declare namespace Express {
       email: string;
       password: string;
     };
+
+    files?: any[{
+      filename;
+    }];
+
+    images?: any[{
+      Productimage;
+    }];
   }
 }

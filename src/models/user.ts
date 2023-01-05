@@ -10,13 +10,14 @@ import {
   HasMany,
   HasOne,
   BelongsTo,
+  DataType,
 } from "sequelize-typescript";
 
 export interface UserI {
   empId?: number | null;
   email: string;
   password: string;
-  status: string;
+  status: boolean;
   designation: string;
   name: String;
   phone: String;
@@ -56,8 +57,11 @@ export class User extends Model implements UserI {
 
   @AllowNull(true)
   @NotEmpty
-  @Column
-  status!: string;
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  status!: boolean;
 
   @AllowNull(true)
   @NotEmpty

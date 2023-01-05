@@ -27,7 +27,6 @@ export const isAuthenticatedUser = async (
       return res.status(401).json({ success: false, msg: "Not Authorized" });
     }
 
-    console.log(validate);
     const user = await User.findOne({
       where: { empId: validate.user.empId },
     });
@@ -36,7 +35,9 @@ export const isAuthenticatedUser = async (
       return res.status(401).json({ success: false, msg: "Not Authorized" });
     }
 
-    req.user = (user as any)._doc;
+    req.user = user;
+
+    console.log(req.user.empId);
     next();
   } catch (error) {
     next(error);

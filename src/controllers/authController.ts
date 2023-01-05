@@ -117,6 +117,91 @@ export const addprofile: RequestHandler = async (req, res, next) => {
     if (!department) {
       res.status(401).json({ msg: "department  is required", success: false });
     }
+
+    await User.update(
+      {
+        name: name,
+        phone: phone,
+        joiningDate: joiningDate,
+        address: address,
+
+        department: department,
+      },
+      { where: { empId: req.user?.empId } }
+    );
+    const user = await User.findOne({
+      where: { empId: req.user?.empId },
+    });
+    res.status(200).json({
+      status: true,
+      msg: "Profile Addeed  Successfully",
+      user: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/// update profile http://localhost:8080/user/info
+
+export const updateprofile: RequestHandler = async (req, res, next) => {
+  try {
+    const { name, phone, address, joiningDate, department } = req.body;
+    let user = await User.findOne({
+      where: { empId: req.user?.empId },
+    });
+
+    console.log(user?.status, user?.designation);
+    if (user?.status === true && user?.designation === "FACULTY") {
+      res.status(401).json({
+        status: false,
+        msg: "Sorry you can only onw time update your profile",
+      });
+    } else {
+      await User.update(
+        {
+          name: name,
+          phone: phone,
+          joiningDate: joiningDate,
+          address: address,
+          department: department,
+          status: true,
+        },
+        { where: { empId: req.user?.empId } }
+      );
+      user = await User.findOne({
+        where: { empId: req.user?.empId },
+      });
+      res.status(200).json({
+        status: true,
+        msg: "Profile updated   Successfully",
+        user: user,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+/// get profile http://localhost:8080/user/info
+
+export const getprofile: RequestHandler = async (req, res, next) => {
+  try {
+    let user = await User.findOne({
+      where: { empId: req.user?.empId },
+    });
+    if (!user) {
+      res.status(401).json({
+        status: false,
+        msg: "Please login",
+        user: user,
+      });
+    }
+    res.status(200).json({
+      status: true,
+      msg: "Profile updated   Successfully",
+      user: user,
+    });
   } catch (error) {
     next(error);
   }
