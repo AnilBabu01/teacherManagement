@@ -17,7 +17,7 @@ export interface UserI {
   empId?: number | null;
   email: string;
   password: string;
-  status: boolean;
+  status: any;
   designation: string;
   name: String;
   phone: String;
@@ -57,11 +57,9 @@ export class User extends Model implements UserI {
 
   @AllowNull(true)
   @NotEmpty
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  status!: boolean;
+  @Default("NOTFILLED")
+  @Column(DataType.ENUM("NOTFILLED", "PENDING", "SUBMIT", "DONE"))
+  status: any;
 
   @AllowNull(true)
   @NotEmpty

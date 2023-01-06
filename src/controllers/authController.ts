@@ -124,8 +124,8 @@ export const addprofile: RequestHandler = async (req, res, next) => {
         phone: phone,
         joiningDate: joiningDate,
         address: address,
-
         department: department,
+        status: "PENDING",
       },
       { where: { empId: req.user?.empId } }
     );
@@ -151,13 +151,9 @@ export const updateprofile: RequestHandler = async (req, res, next) => {
       where: { empId: req.user?.empId },
     });
 
-    console.log(user?.status, user?.designation);
-    if (user?.status === true && user?.designation === "FACULTY") {
-      res.status(401).json({
-        status: false,
-        msg: "Sorry you can only onw time update your profile",
-      });
-    } else {
+    if (user?.status === "PENDING") {
+      console.log(user?.status, user?.designation);
+
       await User.update(
         {
           name: name,
@@ -165,7 +161,6 @@ export const updateprofile: RequestHandler = async (req, res, next) => {
           joiningDate: joiningDate,
           address: address,
           department: department,
-          status: true,
         },
         { where: { empId: req.user?.empId } }
       );
@@ -176,6 +171,11 @@ export const updateprofile: RequestHandler = async (req, res, next) => {
         status: true,
         msg: "Profile updated   Successfully",
         user: user,
+      });
+    } else {
+      res.status(401).json({
+        status: false,
+        msg: "use have allready submited",
       });
     }
   } catch (error) {
