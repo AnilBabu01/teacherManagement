@@ -3,7 +3,7 @@ import { sequelize } from "./config/db";
 import cors from "cors";
 import bodyparser from "body-parser";
 import { router as auth_router } from "./routes/auth";
-
+import { router as quali_router } from "./routes/qualification";
 const PORT = process.env.PORT || 8080;
 
 const app = express();
@@ -16,16 +16,9 @@ app.use(
 app.use("/images", express.static("images"));
 app.use(express.json());
 app.use(bodyparser.urlencoded({ extended: true }));
-// app.use(()=>{
-//     throw createHttpError(404,"Route Not Found")
-// })
-// app.use(error_handler)
 
 app.use("/user/auth", auth_router);
-
-app.get("/api", (req, res) => {
-  res.send("Api is working");
-});
+app.use("/user", quali_router);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on http://localhost:${PORT}`);

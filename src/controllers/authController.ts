@@ -206,3 +206,33 @@ export const getprofile: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+/// get profile http://localhost:8080/user/info
+
+export const submit: RequestHandler = async (req, res, next) => {
+  try {
+    let user = await User.findOne({
+      where: { empId: req.user?.empId },
+    });
+    if (user?.status === "PENDING") {
+      await User.update(
+        {
+          status: "SUBMIT",
+        },
+        { where: { empId: req.user?.empId } }
+      );
+
+      res.status(200).json({
+        status: true,
+        msg: "Your Profile  Successfully Submited",
+      });
+    } else {
+      res.status(401).json({
+        status: false,
+        msg: "You have allready submited",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};

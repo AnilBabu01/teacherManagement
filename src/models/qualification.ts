@@ -32,37 +32,37 @@ export class Qualification extends Model implements QualificationI {
   @Column
   id?: number;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @NotEmpty
   @Column
   type!: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @NotEmpty
   @Column
   totalMarks!: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @NotEmpty
   @Column
   percentage!: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @NotEmpty
   @Column
   subjects!: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @NotEmpty
   @Column
   startDate!: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @NotEmpty
   @Column
   endDate!: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @NotEmpty
   @ForeignKey(() => User)
   @Column

@@ -5,6 +5,7 @@ import {
   addprofile,
   updateprofile,
   getprofile,
+  submit,
 } from "../controllers/authController";
 
 import { isAuthenticatedUser } from "../middlewares/auth";
@@ -20,3 +21,5 @@ router
   .post(isAuthenticatedUser, addprofile)
   .put(isAuthenticatedUser, updateprofile)
   .get(isAuthenticatedUser, getprofile);
+
+router.put("/info/submit", isAuthenticatedUser, submit);
