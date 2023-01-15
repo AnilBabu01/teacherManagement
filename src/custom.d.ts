@@ -5,6 +5,7 @@ declare namespace Express {
       name: string;
       email: string;
       password: string;
+      designation: any;
       status: "ACTIVE" | "DELETED" | "PENDING";
     };
 
