@@ -4,6 +4,9 @@ import cors from "cors";
 import bodyparser from "body-parser";
 import { router as auth_router } from "./routes/auth";
 import { router as quali_router } from "./routes/qualification";
+import { router as teach_router } from "./routes/teaching";
+import { router as adminis_router } from "./routes/administration";
+import { router as research_router } from "./routes/research";
 const PORT = process.env.PORT || 8080;
 
 const app = express();
@@ -18,7 +21,7 @@ app.use(express.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 
 app.use("/user/auth", auth_router);
-app.use("/user", quali_router);
+app.use("/user", quali_router, teach_router, adminis_router, research_router);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on http://localhost:${PORT}`);

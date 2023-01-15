@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { User } from "../models/user";
+import { User } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import { hash, genSalt, compare } from "bcryptjs";
 
@@ -11,13 +11,13 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     const { email, designation, password } = req.body;
     console.log(email, designation, password);
     if (!designation) {
-      res.status(401).json({ msg: "designation is  required", success: false });
+      res.status(401).json({ msg: "designation is  required", status: false });
     }
     if (!email) {
-      res.status(401).json({ msg: "email is  required", success: false });
+      res.status(401).json({ msg: "email is  required", status: false });
     }
     if (!password) {
-      res.status(401).json({ msg: "password is  required", success: false });
+      res.status(401).json({ msg: "password is  required", status: false });
     }
     let user = await User.findOne({ where: { email: email } });
 
@@ -60,10 +60,10 @@ export const loginUser: RequestHandler = async (req, res, next) => {
     }: { username: string; email: string; password: string } = req.body;
 
     if (!email) {
-      res.status(401).json({ msg: "email required", success: false });
+      res.status(401).json({ msg: "email required", status: false });
     }
     if (!password) {
-      res.status(401).json({ msg: "password required", success: false });
+      res.status(401).json({ msg: "password required", status: false });
     }
     let user = await User.findOne({ where: { email: email } });
     if (!user) {
@@ -101,42 +101,61 @@ export const loginUser: RequestHandler = async (req, res, next) => {
 export const addprofile: RequestHandler = async (req, res, next) => {
   try {
     const { name, phone, address, joiningDate, department } = req.body;
-
-    if (!name) {
-      res.status(401).json({ msg: "name is required", success: false });
-    }
-    if (!phone) {
-      res.status(401).json({ msg: "phone is required", success: false });
-    }
-    if (!joiningDate) {
-      res.status(401).json({ msg: "joiningDate is required", success: false });
-    }
-    if (!address) {
-      res.status(401).json({ msg: "address is required", success: false });
-    }
-    if (!department) {
-      res.status(401).json({ msg: "department  is required", success: false });
-    }
-
-    await User.update(
-      {
-        name: name,
-        phone: phone,
-        joiningDate: joiningDate,
-        address: address,
-        department: department,
-        status: "PENDING",
-      },
-      { where: { empId: req.user?.empId } }
-    );
-    const user = await User.findOne({
+    let user = await User.findOne({
       where: { empId: req.user?.empId },
     });
-    res.status(200).json({
-      status: true,
-      msg: "Profile Addeed  Successfully",
-      user: user,
-    });
+
+    if (user?.status === "PENDING") {
+      res.status(401).json({
+        status: false,
+        msg: "You have allready Added",
+      });
+    } else if (user?.status === "SUBMIT") {
+      res.status(401).json({
+        status: false,
+        msg: "You have allready submited",
+      });
+    } else {
+      if (!name) {
+        res.status(401).json({ msg: "name is required", success: false });
+      }
+      if (!phone) {
+        res.status(401).json({ msg: "phone is required", success: false });
+      }
+      if (!joiningDate) {
+        res
+          .status(401)
+          .json({ msg: "joiningDate is required", success: false });
+      }
+      if (!address) {
+        res.status(401).json({ msg: "address is required", success: false });
+      }
+      if (!department) {
+        res
+          .status(401)
+          .json({ msg: "department  is required", success: false });
+      }
+
+      await User.update(
+        {
+          name: name,
+          phone: phone,
+          joiningDate: joiningDate,
+          address: address,
+          department: department,
+          status: "PENDING",
+        },
+        { where: { empId: req.user?.empId } }
+      );
+      user = await User.findOne({
+        where: { empId: req.user?.empId },
+      });
+      res.status(200).json({
+        status: true,
+        msg: "Profile Addeed  Successfully",
+        user: user,
+      });
+    }
   } catch (error) {
     next(error);
   }
@@ -175,7 +194,7 @@ export const updateprofile: RequestHandler = async (req, res, next) => {
     } else {
       res.status(401).json({
         status: false,
-        msg: "use have allready submited",
+        msg: "You have allready submited",
       });
     }
   } catch (error) {

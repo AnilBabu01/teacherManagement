@@ -25,11 +25,11 @@ export interface UserI {
   joiningDate: String;
   department: String;
 }
-import { Teaching } from "./teaching";
-import { Research } from "./research";
-import { Qualification } from "./qualification";
-import { Marks } from "./marks";
-import { Administration } from "./administration";
+import { Teaching } from "./teaching.model";
+import { Research } from "./research.model";
+import { Qualification } from "./qualification.model";
+import { Marks } from "./marks.model";
+import { Administration } from "./administration.model";
 @Table({
   tableName: "users",
   timestamps: true,

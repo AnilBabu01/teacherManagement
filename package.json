@@ -41,6 +41,7 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.25.5",
     "sequelize-typescript": "^2.1.5",
-    "stripe": "^11.1.0"
+    "stripe": "^11.1.0",
+    "uuid": "^9.0.0"
   }
 }

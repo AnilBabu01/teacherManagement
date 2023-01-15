@@ -19,7 +19,7 @@ export interface MarksI {
   remarks: string;
   by: String;
 }
-import { User } from "./user";
+import { User } from "./user.model";
 @Table({
   tableName: "Mark",
   timestamps: true,

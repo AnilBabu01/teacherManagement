@@ -11,22 +11,20 @@ import {
   ForeignKey,
 } from "sequelize-typescript";
 
-export interface ResearchI {
+export interface AdministrationI {
   id?: number | null;
   empId?: number | null;
   session: string;
   semester: string;
-  paperTitle: string;
-  author: String;
-  journalName: String;
-  publishDate: String;
+  designation: string;
+  work: String;
 }
-import { User } from "./user";
+import { User } from "./user.model";
 @Table({
-  tableName: "Research",
+  tableName: "Administration",
   timestamps: true,
 })
-export class Research extends Model implements ResearchI {
+export class Administration extends Model implements AdministrationI {
   @AutoIncrement
   @PrimaryKey
   @Column
@@ -45,22 +43,12 @@ export class Research extends Model implements ResearchI {
   @AllowNull(false)
   @NotEmpty
   @Column
-  paperTitle!: string;
+  designation!: string;
 
   @AllowNull(false)
   @NotEmpty
   @Column
-  author!: string;
-
-  @AllowNull(false)
-  @NotEmpty
-  @Column
-  journalName!: string;
-
-  @AllowNull(false)
-  @NotEmpty
-  @Column
-  publishDate!: string;
+  work!: string;
 
   @AllowNull(false)
   @NotEmpty

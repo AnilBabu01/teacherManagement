@@ -21,7 +21,7 @@ export interface QualificationI {
   startDate: String;
   endDate: String;
 }
-import { User } from "./user";
+import { User } from "./user.model";
 @Table({
   tableName: "Qualification",
   timestamps: true,
